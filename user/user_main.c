@@ -61,7 +61,7 @@ void button_pressed(){
     if ( (oldtime+200) < (oldtime=(system_get_time()/1000) ) ) {        //200ms debounce guard
         new = GPIO_INPUT(GPIO_Pin_12)^1; 		
         GPIO_OUTPUT(GPIO_Pin_12,new);			                        //Toggle relay
-		GPIO_OUTPUT(GPIO_Pin_13,new^1);			                        //Toggle LED
+	GPIO_OUTPUT(GPIO_Pin_13,new^1);			                        //Toggle LED
         relay_info.value->type=new;
         change_value(relay_info.aid,relay_info.iid,relay_info.value);   //Save new value internally
         send_events(NULL,relay_info.aid,relay_info.iid);                //Propagate to HomeKit controller
@@ -72,14 +72,14 @@ void relay(int aid, int iid, cJSON *value, int mode)
 {
     GPIO_ConfigTypeDef gpio0_in_cfg;
     GPIO_ConfigTypeDef gpio12_in_cfg;
-	GPIO_ConfigTypeDef gpio13_in_cfg;
+    GPIO_ConfigTypeDef gpio13_in_cfg;
 
     switch (mode) {
         case 1: { //changed by gui
             if (value) {
-				GPIO_OUTPUT(GPIO_Pin_12, value->type); 		//GPIO12 high -> relay on
-				GPIO_OUTPUT(GPIO_Pin_13, (value->type)^1); 	//GPIO13 low  -> LED   on
-			}
+		GPIO_OUTPUT(GPIO_Pin_12, value->type); 		//GPIO12 high -> relay on
+		GPIO_OUTPUT(GPIO_Pin_13, (value->type)^1); 	//GPIO13 low  -> LED   on
+	    }
         }break;
         case 0: { //init
             gpio0_in_cfg.GPIO_IntrType = GPIO_PIN_INTR_NEGEDGE;         //Falling edge trigger
