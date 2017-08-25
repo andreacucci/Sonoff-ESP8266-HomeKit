@@ -19,8 +19,8 @@ If you did not set up your WiFi, do so by uncommenting the first block of code i
 ```bash
 ~$ export SDK_PATH=<your SDK directory>
 ~$ export BIN_PATH=<where your binaries will be>
-~$ cd HomeKit-Sonoff
-~/HomeKit-Sonoff$ ./gen_misc.sh
+~$ cd Sonoff-ESP8266-HomeKit
+~/Sonoff-ESP8266-HomeKit$ ./gen_misc.sh
 ```
 Use all the defaults or experiment with alternatives...  
 This will create (after several minutes) the files:
