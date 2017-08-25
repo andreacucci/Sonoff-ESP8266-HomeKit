@@ -60,8 +60,8 @@ void button_pressed(){
 
     if ( (oldtime+200) < (oldtime=(system_get_time()/1000) ) ) {        //200ms debounce guard
         new = GPIO_INPUT(GPIO_Pin_12)^1; 		
-        GPIO_OUTPUT(GPIO_Pin_12,new);			                        //Toggle relay
-	GPIO_OUTPUT(GPIO_Pin_13,new^1);			                        //Toggle LED
+        GPIO_OUTPUT(GPIO_Pin_12,new);			                //Toggle relay
+	GPIO_OUTPUT(GPIO_Pin_13,new^1);			                //Toggle LED
         relay_info.value->type=new;
         change_value(relay_info.aid,relay_info.iid,relay_info.value);   //Save new value internally
         send_events(NULL,relay_info.aid,relay_info.iid);                //Propagate to HomeKit controller
@@ -91,12 +91,12 @@ void relay(int aid, int iid, cJSON *value, int mode)
             //GPIO12 = relay
             gpio12_in_cfg.GPIO_IntrType = GPIO_PIN_INTR_DISABLE;        //No interrupt
             gpio12_in_cfg.GPIO_Mode     = GPIO_Mode_Output;             //Output mode
-            gpio12_in_cfg.GPIO_Pullup	= GPIO_PullUp_EN;      		    //
+            gpio12_in_cfg.GPIO_Pullup	= GPIO_PullUp_EN;      		//
             gpio12_in_cfg.GPIO_Pin      = GPIO_Pin_12;                  //Enable GPIO12
             gpio_config(&gpio12_in_cfg);                                //Init function
             
             //GPIO13 = LED
-			gpio13_in_cfg.GPIO_IntrType = GPIO_PIN_INTR_DISABLE;        //No interrupt
+	    gpio13_in_cfg.GPIO_IntrType = GPIO_PIN_INTR_DISABLE;        //No interrupt
             gpio13_in_cfg.GPIO_Mode     = GPIO_Mode_Output;             //Output mode
             gpio13_in_cfg.GPIO_Pullup	= GPIO_PullUp_EN;            	//
             gpio13_in_cfg.GPIO_Pin      = GPIO_Pin_13;                  //Enable GPIO13
@@ -105,7 +105,7 @@ void relay(int aid, int iid, cJSON *value, int mode)
             relay(aid,iid,value,1);                                     //Init the outputs
 
             relay_info.aid=aid;                                         //Init HomeKit related values 
-			relay_info.iid=iid;
+	    relay_info.iid=iid;
             relay_info.value=cJSON_CreateBool(0); 						
         }break;
         case 2: { //update
@@ -121,13 +121,13 @@ void identify_task(void *arg)
 {
     int i,original;
     while(1) {
-        while(!xQueueReceive(identifyQueue,NULL,10));	//wait for a queue item
-        original=GPIO_INPUT(GPIO_Pin_13); 				//get original state
+        while(!xQueueReceive(identifyQueue,NULL,10));	        //wait for a queue item
+        original=GPIO_INPUT(GPIO_Pin_13); 			//get original state
         for (i=0;i<4;i++) {
             GPIO_OUTPUT(GPIO_Pin_13,original^1); 		//toggle
-            vTaskDelay(5); 								//0.05 sec
+            vTaskDelay(5); 					//0.05 sec
             GPIO_OUTPUT(GPIO_Pin_13,original^0);		//toggle
-            vTaskDelay(5); 								//0.05 sec
+            vTaskDelay(5); 					//0.05 sec
         }
     }
 }
